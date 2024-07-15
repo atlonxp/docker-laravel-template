@@ -16,9 +16,25 @@ RUN apt-get update && apt-get install -y \
     unzip \
     git \
     curl \
-    && docker-php-ext-install pdo_mysql mbstring zip exif pcntl \
-    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
-    && docker-php-ext-install gd
+    libonig-dev \
+    libzip-dev
+
+# Install PHP extensions one by one to identify issues
+RUN docker-php-ext-install pdo_mysql && \
+    echo "pdo_mysql installed successfully" && \
+    docker-php-ext-install mbstring && \
+    echo "mbstring installed successfully" && \
+    docker-php-ext-install zip && \
+    echo "zip installed successfully" && \
+    docker-php-ext-install exif && \
+    echo "exif installed successfully" && \
+    docker-php-ext-install pcntl && \
+    echo "pcntl installed successfully"
+
+# Install GD extension
+RUN docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ && \
+    docker-php-ext-install gd && \
+    echo "gd installed successfully"
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -38,3 +54,4 @@ COPY --chown=www-data:www-data src/ /var/www/html
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
 CMD ["php-fpm"]
+
