@@ -15,7 +15,7 @@ This repository provides a Docker setup for a Laravel application using PHP-FPM,
 git clone https://github.com/your-repo/laravel-docker-template.git
 cd laravel-docker-template
 
-```python
+```
 your-laravel-project/
 ├── Dockerfile
 ├── Dockerfile.nginx
